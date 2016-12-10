@@ -86,7 +86,7 @@
     $ yum install python-devel
     $ yum install libffi-devel
     $ pip install request[security]
-    $ yum install python27-python-psycopg2.x86_64 -y             ## Install Python psycopg2    
+    $ pip install psycopg2             ## Install Python psycopg2    
     
 -> Step 6: Set IPTABLES
     - Alow the host receive connection using the port 5000
