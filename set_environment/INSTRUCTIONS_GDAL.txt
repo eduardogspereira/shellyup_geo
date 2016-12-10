@@ -18,3 +18,9 @@ We will get the last version of the source code (2.12 - October 2016) and compil
 	$ ln -s /usr/lib64/libproj.so.0 /usr/lib64/libproj.so
 	$ gdalinfo --version		## For check if everything finish fine.	
 	// Now the GDAL should be installed correct on your server.
+
+-> Installing the script:
+	$ mkdir $HOME/bin
+	$ cp gdb2postgis.sh $HOME/bin
+	$ echo "alias gdb2postgis='$HOME/bin/gdb2postgis.sh' >> $HOME/.bashrc
+	$ source $HOME/.bashrc
