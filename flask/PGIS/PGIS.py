@@ -31,7 +31,7 @@ class PostGISTasks:
         cur = self.con.cursor()
         cur.execute("SELECT shape.fld_zone, shape.static_bfe FROM s_fld_haz_ar as shape, \
                      ST_GeomFromText('POINT(%s %s)', 4326) as point\
-                     WHERE ST_Contains(shape.geom, point) LIMIT 1" % (lng, lat))
+                     WHERE ST_Contains(shape.the_geom, point) LIMIT 1" % (lng, lat))
         recv = cur.fetchall()
         cur.close()
         self.con.close()
