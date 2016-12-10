@@ -1,0 +1,20 @@
+*******************************************
+|	INSTRUCTIONS FOR INSTALL 	  |
+|		  GDAL 			  |
+|  [Geospatial Data Abstraction Library]  |  
+*******************************************
+
+GDAL is a very used tools for handle differents types of geospatial data.
+We will get the last version of the source code (2.12 - October 2016) and compile it on the CentOS 6.8.
+
+-> Steps:
+	$ wget http://download.osgeo.org/gdal/2.1.2/gdal-2.1.2.tar.gz		## Download the data from the official site.
+	$ tar xvf gdal-2.1.2.tar.gz		## Uncompress the tar.gz file
+	$ cd gdal-2.1.2		## Go to the folder
+	$ ./configure --with-pg=/usr/bin/pg_config	## Check if your system has the requeriments for install GDAL.
+	// It's important check the output from this command. If you check  some lines up you should see 'PostgreSQL support:	yes', otherwise something went wrong.
+	$ make		## Compile the binaries files. This step can take some time.
+	$ make install 		## Install GDAL
+	$ ln -s /usr/lib64/libproj.so.0 /usr/lib64/libproj.so
+	$ gdalinfo --version		## For check if everything finish fine.	
+	// Now the GDAL should be installed correct on your server.

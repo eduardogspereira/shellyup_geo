@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SHP Finder | Shelly Bo</title>
+        <meta name="viewpoert" content="initial-scale=1.0">
+        <link rel="shortcut icon" href="/static/favicon.ico">
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                       }
+            #map {
+                height: 80%;   
+                 }
+            table {
+                border-collapse: collapse;
+                  }
+            table, th, td {
+                width: 30%;
+                border: 1px solid black;
+                padding: 3px;
+                          }
+            th {
+                text-align: center;
+                background-color: #4CAF50;
+               }
+            td {
+                text-align: left;
+               }
+        </style>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+    <script>
+    function initMap() {
+      var myLatLng = {lat: {{ lat }}, lng: {{ lng }}};
+
+      var map  = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: myLatLng
+            });
+
+      var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'Lat: {{ lat }} | Lng: {{ lng }}'
+            });
+
+        map.data.loadGeoJson('https://raw.githubusercontent.com/eduardogspereira/geojson_repository/master/final.geojson');
+        map.data.setStyle({
+            fillColor: 'blue',
+            fillOpacity: 0.2,
+            strokeColor: 'blue',
+            strokeWeight: 1
+        });
+
+      }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzSgtgzPbcajvRifgu1C_1Nce7vpXOmbg&callback=initMap" async defer></script>
+    <table>
+        <tr>
+            <th>FLD_ZONE</th>
+            <th>STATIC_BFE</th>
+        </tr>
+        <tr>
+            <td>{{ fld_zone }}</td>
+            <td>{{ static_bfe }}</td>
+        </tr>
+    </table>
+    </body>
+</html>
+

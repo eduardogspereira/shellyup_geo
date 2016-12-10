@@ -1,0 +1,13 @@
+{% extends "main.html" %}
+{% block body %}
+    <form action="{{ url_for('latlng')}}" method=post>
+        <dl>
+            <dt>Latitude:
+            <dd><input type=number step=any name=latl required>
+            <dt>Longitude:
+            <dd><input type=number step=any name=lonl required>
+            <dt>
+            <dd><input type=submit name=Submit>
+        </dl>
+    </form>
+{% endblock %}

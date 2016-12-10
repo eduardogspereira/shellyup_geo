@@ -1,0 +1,103 @@
+
+  ╻┏┓╻┏━┓╺┳╸┏━┓╻  ╻     ╻┏┓╻┏━┓╺┳╸┏━┓╻ ╻┏━╸╺┳╸╻┏━┓┏┓╻┏━┓
+  ┃┃┗┫┗━┓ ┃ ┣━┫┃  ┃     ┃┃┗┫┗━┓ ┃ ┣┳┛┃ ┃┃   ┃ ┃┃ ┃┃┗┫┗━┓
+  ╹╹ ╹┗━┛ ╹ ╹ ╹┗━╸┗━╸   ╹╹ ╹┗━┛ ╹ ╹┗╸┗━┛┗━╸ ╹ ╹┗━┛╹ ╹┗━┛
+
+############################################################
+##                                                        ## 
+##  Detailed Information for install this Application     ##
+##         -- This commands were tested on:               ##
+##            CentOS release 6.8 (Final)                  ##
+##           Kernel 2.6.32-642.el6.x86_64                 ##
+##                                                        ## 
+############################################################
+
+-> Step 0:
+    - Run all the commands as root. If you are on a test machine you don't need to be to careful about run commands as root.
+    $ su root   ## Login as root
+
+    - Move the *.tar.gz file with the data for the folder you want store the application and later access the ./Upwork.
+    $ tar -xvf upwork.tar.gz    ## Uncompress the data
+    $ cd Upwork/        ## Access the folder that contain the data.
+
+-> Step 1: INSTALL POSTGRES AND POSTGIS
+    - For install PostgreSQL 9.6 you need run the follow commands:
+    $ yum update -y     ## For update the repositories
+    $ yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm -y      ## Install the repository of PostgreSQL
+    $ yum update -y
+    $ yum install postgresql96.x86_64 postgresql96-contrib.x86_64 postgresql96-server.x86_64 postgresql96-devel.x86_64  -y      ## Install PostgreSQL9.6 
+    $ service postgresql-9.6 initdb && chkconfig postgresql-9.6 on      ## Create the first database and run chkconfig for postgres always start with the server
+    $ /etc/init.d/postgresql-9.6 start          ## Start PostgreSQL service
+    // Now PostgreSQL should be succesful installed.
+
+    - For install PostGIS:
+    $ yum install http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y    ## Install EPEL Repository < https://fedoraproject.org/wiki/EPEL >
+    $ yum update -y
+    $ yum install postgis2_96.x86_64 postgis2_96-client.x86_64 postgis2_96-devel.x86_64 -y      ## Install PostGIS
+    // Now PostGIS should be succesfull installed.
+
+-> Step 2: SETTING THE POSTGRES
+    - After this step the PostgreSQL will be ready for use. As default it only allow access from localhost, but as the app will query the localhost this won't be a problem.
+    $ su postgres       ## To access postgres account. You need to run this command as root.
+    $ psql      ## For enter on psql shell. I'm going to use this notation ' =# ' to symbolize that the command should run on psql shell.
+    =# CREATE USER admin SUPERUSER PASSWORD '#drd_prr_0316$';   ## Create the user admin with password #drd_prr_0316$
+    =# CREATE DATABASE shapes_shelly;   ## Create the database 
+    =# ALTER DATABASE shapes_shelly OWNER TO admin;     ## Alter the owner
+    =# \q       ## Type this for exit the psql
+    $ sed 's/ident/md5/' /var/lib/pgsql/9.6/data/pg_hba.conf -i         ## For change the authentication methods on PostgreSQL
+    $ /etc/init.d/postgresql-9.6 restart
+    $ psql -U admin -h 127.0.0.1 shapes_shelly          ## Enter on PostgreSQL as admin user on shapes_shelly database      
+    =# CREATE EXTENSION postgis;        ## If no error happen, the output should be only 'CREATE EXTENSION'
+    =# \q       ## Type this for exit the psql
+    $ psql -U admin -h 127.0.0.1 shapes_shelly < data/shapes_shelly.dump        ## Load the data on PostgreSQL
+    // Now the data should be on PostgreSQL and it is ready for the app.
+
+-> Step 3: INSTALL PYTHON 2.7
+    - By default on CentOS 6.8 only have Python 2.6. Let's install Python 2.7. I inserted a *.repo file on set_enrvironment/.files/slc.repo
+    $ yum -y update
+    $ yum groupinstall -y 'development tools'           ## Packages need for compile Python2.7
+    $ yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel            ## Packages need for compile Python 2.7
+    $ yum install -y xz-libs            ## Packages need for compile Python2.7
+    $ yum install -y wget               ## Wget is need for download Python2.7 source code.
+    $ wget -qO- http://people.redhat.com/bkabrda/scl_python27.repo >> /etc/yum.repos.d/scl.repo
+    $ yum update -y
+    $ yum install python27 -y 
+    $ echo "scl enable python27 bash" >> $HOME/.bash_profile
+    $ ln -s /usr/pgsql-9.6/bin/pg_config /usr/bin/
+    $ source ~/.bash_profile
+    // Now Pyton2.7 should be working on your machine
+
+-> Step 4: INSTALL PIP
+    $ wget -O /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py      ## Download script for install pip
+    $ python /tmp/get-pip.py            ## Run the script
+    $ pip install -U pip          ## Check that pip is up to date
+    // Now pip should be working on your machine
+
+-> Step 4.5: SETTING VIRTUAL ENVIRONMENT
+    - It's recommended to use environment with your python application, for the packages you download with PIP don't have conflit with packages from others application. It makes easier to handle this.
+    $ virtualenv-2.7 Upwork/venv 	## Creates the folder that will contains the application of the app. The dir could be anywhere, but it's good to be near the application, for make easier to identify.
+    $ source Upwork/venv/bin/activate		## Activate this python environment. Now every package installed while it's activate, will only affect this environment.
+
+-> Step 5: INSTALL EXTRA PACKAGES THAT WILL BE USED
+    $ pip install -U geocoder
+    $ pip install -U flask
+    $ yum update -y
+    $ yum install openssl-devel
+    $ yum install python-devel
+    $ yum install libffi-devel
+    $ pip install request[security]
+    $ yum install python27-python-psycopg2.x86_64 -y             ## Install Python psycopg2    
+    
+-> Step 6: Set IPTABLES
+    - Alow the host receive connection using the port 5000
+    $ iptables -I INPUT 1 -p tcp -m tcp --dport 5000 -j ACCEPT
+    $ /etc/init.d/iptables save
+    $ /etc/inti.d/iptables restart 
+
+-> Step 7: Running Flask
+    - Go to the folder where you decompress the *.tar.gz file. Run this commands inside flask dir [ /Upwork/flask ]. If you run `$ ls` you can see the file named 'app.py'.
+    $ export FLASK_DEBUG=1             ## This options is used for debug, when you use on you production server it's better don't use this option.
+    $ export FLASK_APP=app.py           ## Variable for the file that contains the flask app.
+    $ flask run --host=0.0.0.0          ## Run flask app. The parameter '--host=0.0.0.0' need to be used for flask accept external connections. 
+
+
