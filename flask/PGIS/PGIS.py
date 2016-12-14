@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import psycopg2
+from datetime import datetime
 
 class PostGISTasks:
     x = ''
@@ -36,3 +37,20 @@ class PostGISTasks:
         cur.close()
         self.con.close()
         return recv
+
+    def gjson_pgis(self,lat,lng):
+        cur = self.con.cursor()
+        cur.execute("SELECT ST_AsGeoJSON(shape.the_geom) FROM s_fld_haz_ar as shape, \
+                     ST_GeomFromText('POINT(%s %s)', 4326) as point\
+                     WHERE ST_Contains(shape.the_geom, point) LIMIT 1" % (lng, lat))
+        recv = cur.fetchall()
+        cur.close()
+        recw = recv[0][0]
+        i = datetime.now()
+        fname = i.strftime('%m%d%H%M%S%f')
+        filename = '/tmp/geojson/'+fname+'.geojson'
+        target =  open(filename, 'w')
+        target.write(recw)
+        target.close()
+        return (fname)
+
