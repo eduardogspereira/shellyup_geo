@@ -48,7 +48,7 @@ class PostGISTasks:
         recw = recv[0][0]
         i = datetime.now()
         fname = i.strftime('%m%d%H%M%S%f')
-        filename = '/tmp/geojson/'+fname+'.geojson'
+        filename = '/var/www/html/geojson/'+fname+'.json'
         target =  open(filename, 'w')
         target.write(recw)
         target.close()

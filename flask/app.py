@@ -4,9 +4,12 @@ from PGIS.PGIS import PostGISTasks
 from ParseData.ParseData import PData
 from flask import Flask, request, session, g, redirect, url_for, abort, \
                   render_template, flash
+from flask_cors import CORS, cross_origin
 
 # Create the application
 app = Flask(__name__)
+CORS(app)
+
 
 ## Index Page
 @app.route('/')
