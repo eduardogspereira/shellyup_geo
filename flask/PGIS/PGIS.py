@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import psycopg2
-from datetime import datetime
+##from datetime import datetime
 
 class PostGISTasks:
     x = ''
@@ -46,11 +46,11 @@ class PostGISTasks:
         recv = cur.fetchall()
         cur.close()
         recw = recv[0][0]
-        i = datetime.now()
-        fname = i.strftime('%m%d%H%M%S%f')
-        filename = '/var/www/html/geojson/'+fname+'.json'
-        target =  open(filename, 'w')
-        target.write(recw)
-        target.close()
-        return (fname)
+        ##i = datetime.now()
+        ##fname = i.strftime('%m%d%H%M%S%f')
+        ##filename = '/var/www/html/geojson/'+fname+'.json'
+        ##target =  open(filename, 'w')
+        ##target.write(recw)
+        ##target.close()
+        return (recw)
 

@@ -4,11 +4,9 @@ from PGIS.PGIS import PostGISTasks
 from ParseData.ParseData import PData
 from flask import Flask, request, session, g, redirect, url_for, abort, \
                   render_template, flash
-from flask_cors import CORS, cross_origin
 
 # Create the application
 app = Flask(__name__)
-CORS(app)
 
 
 ## Index Page
@@ -69,6 +67,16 @@ def gmaps():
         return render_template('gmaps.html', lat=lat, lng=lng, fld_zone=fld_zone, static_bfe=static_bfe, fname=fname)
     else:
         return redirect(url_for('menu'))
+
+@app.route('/teste/<lat>&<lng>')
+def teste(lat,lng):
+    pg = PostGISTasks()
+    try:
+        x = pg.gjson_pgis(lat,lng)
+    except Exception as e:
+        x = 'No result for this coordinates.'
+    return x
+
 
 if __name__ == '__main__':
     pass
