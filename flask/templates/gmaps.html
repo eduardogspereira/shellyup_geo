@@ -49,6 +49,23 @@
             title: 'Lat: {{ lat }} | Lng: {{ lng }}'
             });
 
+/*
+      $(document).ready(function() {
+        var request = $.ajax({
+            type: "POST",
+            url: "/geojson/{{ lat }}&{{ lng }}",
+            dataType: "html"
+        });
+        request.done(function(JSON_array) {
+            array_data = JSON_array
+            alert(array_data);
+        })
+      })
+*/
+    $.getJSON("/geojson/{{ lat }}&{{ lng }}", function(data) {
+        map.data.addGeoJson(data)
+    })
+
     }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzSgtgzPbcajvRifgu1C_1Nce7vpXOmbg&callback=initMap" async defer></script>

@@ -45,7 +45,10 @@ class PostGISTasks:
                      WHERE ST_Contains(shape.the_geom, point) LIMIT 1" % (lng, lat))
         recv = cur.fetchall()
         cur.close()
-        recw = recv[0][0]
+        
+        recw = '{"type": "FeatureCollection", "features": [\
+                {"type": "Feature", "properties": {}, "geometry":\
+                ' + recv[0][0] + '}]}'
         ##i = datetime.now()
         ##fname = i.strftime('%m%d%H%M%S%f')
         ##filename = '/var/www/html/geojson/'+fname+'.json'
