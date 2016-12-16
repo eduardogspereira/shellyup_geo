@@ -1,10 +1,58 @@
 <!doctype html>
-<title>SHP Finder | Shelly Bo</title>
-<link rel="shortcut icon" href="/static/favicon.ico">
-<div class=page>
-Feature Search - Menu
-<p class=nav>
-<a href="/latlong">Using Lat/Long</a>
-<a href="/gcode">Using the Address</a>
-{% block body %}{% endblock %}
-</div>
+<html>
+  <head>
+    <title>SHP Finder | Shelly Bo</title>
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto:100" rel="stylesheet">
+    <style>
+    * {
+      font-family: monospace;
+      }
+
+    .page {
+        position: fixed;
+        background-color: white;
+        top: 30%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        outline:1px solid black;
+        outline-offset: 25px;
+        z-index: 1;
+        }
+     
+    .subtitle {
+      font-family: monospace;
+      font-size: 1.6em;
+      }
+
+    .sub{
+       text-decoration: underline
+     }
+
+    .middle {
+      text-align: center;
+      }
+  
+    form {
+      text-align: left;
+      }
+
+    dd {
+      padding: 2px 0px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="page">
+    <h1 class="subtitle"><span class="sub">Feature</span> <span class="sub">Search</span> - <span class="sub">Menu</span></h1>
+    <p class=nav>
+    <div class="middle">
+    <a href="/latlong">Using Lat/Long</a>
+    <a href="/gcode">Using the Address</a>
+    </div> 
+    {% block body %}{% endblock %}
+    </div>
+  </body>
+</html>
