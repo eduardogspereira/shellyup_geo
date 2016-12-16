@@ -6,32 +6,51 @@
         <link rel="shortcut icon" href="/static/favicon.ico">
         <style>
             html, body {
-              height: 100%;
-              margin: 0;
-              padding: 0;
               }
 
             #map {
-              height: 80%;   
+              height: 100%;   
+              width: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              z-index: 0
+              }
+
+            .tabela {
+              position: relative;
+              z-index: 1;
+              width: 15em;
+              border-radius: 5px; 
+              background: rgba(0,0,0,0.45);
+              height: 4em;
+              margin: auto auto 0;
               }
 
             table {
+              margin: 0 auto;
+              padding: 3px 0px;
               border-collapse: collapse;
+              background: white
               }
 
             table, th, td {
-              width: 30%;
+              width: 12.5em;
               border: 1px solid black;
-              padding: 3px;
+              padding: 3px 0px;
               font-family: monospace;
-              font-size: 1.1em;
+              font-size: 1.05em;
               }
 
             th {
               text-align: center;
               background-color: #4CAF50;
               }
-
+          
+            .tabelaaux {
+              padding: 0.5em 0px;
+              }
+              
             td {
               text-align: left;
               }
@@ -70,6 +89,8 @@
  }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzSgtgzPbcajvRifgu1C_1Nce7vpXOmbg&callback=initMap" async defer></script>
+    <div class="tabela">
+    <div class="tabelaaux">
     <table>
         <tr>
             <th>FLD_ZONE</th>
@@ -80,6 +101,8 @@
             <td>{{ static_bfe }}</td>
         </tr>
     </table>
+    </div>
+    </div>
     </body>
 </html>
 
