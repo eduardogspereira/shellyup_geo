@@ -66,7 +66,8 @@
 
       var map  = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
-            center: myLatLng
+            center: myLatLng,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
             });
 
       var marker = new google.maps.Marker({
