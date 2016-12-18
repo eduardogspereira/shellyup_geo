@@ -78,10 +78,10 @@ def maingeojson(lat,lng):
 @app.route('/geojson/aux/<lat>&<lng>')
 def auxgeojson(lat, lng):
     pg = PostGISTasks()
- ##   try:
-    x = pg.agjson_pgis(lat,lng)
-   ## except Exception as e:
-   ##   x = 'No result for this coordinates.'
+    try:
+        x = pg.agjson_pgis(lat,lng)
+    except Exception as e:
+        x = 'No result for this coordinates.'
     return x
 
 if __name__ == '__main__':
