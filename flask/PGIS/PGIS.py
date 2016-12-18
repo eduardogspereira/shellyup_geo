@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import psycopg2
-##from datetime import datetime
+import time
 
 class PostGISTasks:
     x = ''
@@ -40,20 +40,39 @@ class PostGISTasks:
 
     def gjson_pgis(self,lat,lng):
         cur = self.con.cursor()
-        cur.execute("SELECT ST_AsGeoJSON(shape.the_geom) FROM s_fld_haz_ar as shape, \
+        cur.execute("SELECT shape.fld_zone, ST_AsGeoJSON(shape.the_geom) FROM s_fld_haz_ar as shape, \
                      ST_GeomFromText('POINT(%s %s)', 4326) as point\
                      WHERE ST_Contains(shape.the_geom, point) LIMIT 1" % (lng, lat))
         recv = cur.fetchall()
         cur.close()
         
-        recw = '{"type": "FeatureCollection", "features": [\
-                {"type": "Feature", "properties": {}, "geometry":\
-                ' + recv[0][0] + '}]}'
-        ##i = datetime.now()
-        ##fname = i.strftime('%m%d%H%M%S%f')
-        ##filename = '/var/www/html/geojson/'+fname+'.json'
-        ##target =  open(filename, 'w')
-        ##target.write(recw)
-        ##target.close()
-        return (recw)
+        partone = '{"type": "FeatureCollection", "features": ['
+        partmain = '{"type": "Feature", "properties": {"fld_zone":"' + recv[0][0] + '"}, "geometry":\
+                   ' + recv[0][1] + '}' 
+        partmiddle = self.agjson_pgis(lat, lng)
+        partfinal = ']}'
+        final = partone+partmain+partmiddle+partfinal
+        return final
 
+    def agjson_pgis(self,lat,lng):
+        cur = self.con.cursor()
+        cur.execute("SELECT shape.ogc_fid FROM s_fld_haz_ar as shape, \
+                     ST_GeomFromText('POINT(%s %s)', 4326) as point\
+                     WHERE ST_Contains(shape.the_geom, point) LIMIT 1" % (lng, lat))
+        ogcid = cur.fetchone()
+        cur.execute("SELECT ogc_fid FROM s_fld_haz_ar as x INNER JOIN\
+                    (SELECT the_geom FROM s_fld_haz_ar WHERE ogc_fid = %s ) as point\
+                    ON ST_Touches(point.the_geom, x.the_geom)" % ogcid[0] )
+        ogid = cur.fetchall()
+        cur.close()
+        allfeatures = ''
+        for x in ogid:
+          cur = self.con.cursor()
+          cur.execute("SELECT shape.fld_zone, ST_AsGeoJSON(shape.the_geom) FROM s_fld_haz_ar as shape \
+                       WHERE ogc_fid = %s " % x )
+          rev = cur.fetchall()
+          cur.close()
+          recw = ',{"type": "Feature", "properties": {"fld_zone":"' + rev[0][0] + '"}, "geometry":\
+                  ' + rev[0][1] + '}'
+          allfeatures = allfeatures + recw
+        return str(allfeatures)

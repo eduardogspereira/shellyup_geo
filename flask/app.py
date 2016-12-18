@@ -66,8 +66,8 @@ def gmaps():
     else:
         return redirect(url_for('menu'))
 
-@app.route('/geojson/<lat>&<lng>')
-def teste(lat,lng):
+@app.route('/geojson/main/<lat>&<lng>')
+def maingeojson(lat,lng):
     pg = PostGISTasks()
     try:
         x = pg.gjson_pgis(lat,lng)
@@ -75,6 +75,14 @@ def teste(lat,lng):
         x = 'No result for this coordinates.'
     return x
 
+@app.route('/geojson/aux/<lat>&<lng>')
+def auxgeojson(lat, lng):
+    pg = PostGISTasks()
+ ##   try:
+    x = pg.agjson_pgis(lat,lng)
+   ## except Exception as e:
+   ##   x = 'No result for this coordinates.'
+    return x
 
 if __name__ == '__main__':
     pass
