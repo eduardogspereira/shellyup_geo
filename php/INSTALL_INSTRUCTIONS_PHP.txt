@@ -1,0 +1,100 @@
+########################################
+#                                      #
+#       INSTALL INSTRUCTIONS           #
+#   HTTPD + PHP + PostgreSQL Module    #
+#                                      #
+########################################
+
+$ yum install httpd
+|
+|-> Install Apache HTTP Service 2.2.
+
+$ chkconfig httpd on
+|
+|-> This will set Apache to always start with the server.
+
+$ chkconfig --list httpd
+|
+|-> Check if this is set right. The output show be like this:
+    "httpd            0:off 1:off 2:on  3:on  4:on  5:on  6:off"
+
+$ iptables -I INPUT 1 -p tcp -m tcp --dport 80 -j ACCEPT
+$ /etc/init.d/iptables save
+$ /etc/inti.d/iptables restart 
+|
+|-> Allows to receive connection on Apache port.
+
+$ rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+$ rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
+|
+|-> Repositories to install PHP5.6.
+
+$ yum update -y
+|
+|-> Update the packages.
+
+$ yum install php56w php56w-opcache php56w-pgsql
+|
+|-> Install PHP packages.
+
+
+$ vim /etc/httpd/conf/httpd.conf
+|
+|-> Change this lines:
+
+-On line 809 add this:
+AddHandler application/x-httpd-php .html
+
+-On line 816 add this:
+AddType text/html .shtml .php
+
+-On line 817 add this:
+AddType application/x-httpd-php .php
+
+-On line 331 replace with this:
+Options FollowSymLinks
+
+
+$ /etc/init.d/httpd restart
+|
+|-> Restart to reload the settings.
+
+$ cp info.html /var/www/html/
+|
+|-> Testing with PHP is working fine. On the browser type the server IP with '/info.html'. You should see a page with PHP informations. 
+  http://<IP>/info.html
+
+$ setsebool -P httpd_can_network_connect_db 1
+|
+|-> By default the CentOS don't allow the Apache to connect direct with the database. So we need to change this variable on the CentOS by running this command.
+
+$ getsebool httpd_can_network_connect_db
+|
+|-> After you can run this command to see if it worked. It must be showing 'on'.
+
+// Now go on your browser again on http://<IP>/info.html and check if the message changed from "Can't connect with the database" to "Successfully connected to database". If it's working fine, go to the next step.
+
+$ rm -f /var/www/html/info.html
+|
+|-> Remove this file, we won't need it anymore.
+
+$ yum install python34 -y
+|
+|-> Let's install Python 3.4.
+
+$ yum install python34-setuptools
+$ easy_install-3.4 pip
+$ pip3 install geocoder
+|
+|-> Install Geocoder. This will be the only Python we will be using. 
+
+$ cp html.tar.gz /var/www/html/
+$ cd /var/www/html/
+$ tar xvf html.tar.gz
+$ rm html.tar.gz
+|
+|-> Extract the files.
+
+// Now the app would be working on http://<IP>/
+
+- -

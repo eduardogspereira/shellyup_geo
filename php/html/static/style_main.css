@@ -1,0 +1,51 @@
+* {
+  font-family: monospace;
+  }
+
+.page {
+  position: fixed;
+  background-color: white;
+  top: 30%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  outline:1px solid black;
+  outline-offset: 25px;
+  z-index: 1;
+  }
+
+.subtitle {
+  font-family: monospace;
+  font-size: 1.6em;
+  }
+
+.sub{
+  text-decoration: underline
+  }
+
+.middle {
+  text-align: center;
+  }
+
+form {
+  text-align: left;
+  }
+
+dd {
+  padding: 2px 0px;
+ }
+
+a {
+  color: black
+  }
+
+.cmenu {
+  text-decoration: none
+  }
+
+
+.notfound {
+  background-color: black;
+  text-align: center;
+  color: white;
+  }

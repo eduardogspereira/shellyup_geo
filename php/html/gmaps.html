@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SHP Finder | Shelly Bo</title>
+        <meta name="viewpoert" content="initial-scale=1.0">
+        <link rel="shortcut icon" href="/static/favicon.ico">
+        <link rel="stylesheet" type="text/css" href="static/style.css">
+        <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    </head>
+    <body>
+     <div id="style-selector-control" class="map-control">
+        <p id="legend"> Flood Zone Layer </p>
+        <div class="radiobutton">
+        <label for="hide-poi"> <input type="radio" name="show-hide" id="hide-poi"
+        class="selector-control">Hide</label>
+        <input type="radio" name="show-hide" id="show-poi"
+        class="selector-control" checked="checked">
+        <label for="show-poi">Show</label>
+        </div>
+        <table>
+          <tr>
+            <th style="background-color: rgba(239,61,71,0.7); border: 1px solid rgb(239,61,71)"></th>
+            <td>A*</td>
+          </tr> 
+          <tr>
+            <th style="background-color: rgba(139,0,0,0.7); border: 1px solid rgb(139,0,0)" ></th>
+            <td>VE</td>
+          </tr>
+          <tr>
+            <th></th>
+            <td>X</td>
+          </tr>
+        </table>
+     </div>
+     <div id="map"> </div>
+   <script>
+     var arr = document.URL;
+     str = arr.split("?").pop();
+     itens = str.split("&");
+     latl = Number(itens[0].split("=").pop());
+     lngl = Number(itens[1].split("=").pop());
+     fld_zone = itens[2].split("=").pop();
+     static_bfe = itens[3].split("=").pop();
+     function initMap() {
+      var myLatLng = {
+                      lat: latl, 
+                      lng: lngl
+                      };
+
+      var map  = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: myLatLng,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+            });
+      
+
+      var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'Lat: '+latl+' | Lng: '+lngl
+            });
+
+     var x =  $.getJSON("/geojson.php?lat="+latl+"&lng="+lngl, function(data) {
+          var features = map.data.addGeoJson(data);
+          });
+     
+     function fldColor(fColor, sColor) {
+        this.fillColor = fColor;
+        this.fillOpacity = 0.4;
+        this.strokeColor = sColor;
+        this.strokeWeight = 0.9;
+      };
+
+
+     var styleControl = document.getElementById('style-selector-control');
+     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(styleControl);
+
+     document.getElementById('hide-poi').addEventListener('click', function() {
+         map.data.setStyle({
+            fillOpacity: 0,
+            strokeWeight: 0})
+         });
+       
+     document.getElementById('show-poi').addEventListener('click', function() {
+        map.data.setStyle(function(feature) {
+           x = feature.getProperty('fld_zone')
+           if (x === 'X') {
+             fldZone = new fldColor('white','black')
+           } else if (x === 'VE') {
+             fldZone = new fldColor('#8B0000','#8B0000')
+           } else {
+             fldZone = new fldColor('#ef3d47','#ef3d47')
+           };
+           return fldZone;
+           })
+         });
+    
+      map.data.setStyle(function(feature) {
+        x = feature.getProperty('fld_zone')
+        if (x === 'X') {
+          fldZone = new fldColor('white','black')
+        } else if (x === 'VE') {
+          fldZone = new fldColor('#8B0000','#8B0000')
+        } else {
+          fldZone = new fldColor('#ef3d47','#ef3d47')
+        };
+        return fldZone;
+       });
+     }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzSgtgzPbcajvRifgu1C_1Nce7vpXOmbg&callback=initMap" async defer></script>
+    <div class="tabela">
+    <div class="tabelaaux">
+    <table>
+        <tr>
+            <th>FLD_ZONE</th>
+            <th>STATIC_BFE</th>
+        </tr>
+        <tr>
+            </div><td id="fldzone"></td>
+            <td id="staticbfe"></td>
+        </tr>
+        <script>
+        if (fld_zone === 'No%20results'){
+          fld_zone = 'No results';
+          static_bfe = 'No results';
+        };
+        $("#fldzone").append(fld_zone);
+        $("#staticbfe").append(static_bfe);
+        </script>
+    </table>
+    </div>
+    </div>
+    </body>
+</html>
+

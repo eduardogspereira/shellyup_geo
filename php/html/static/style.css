@@ -1,0 +1,115 @@
+ html, body {
+  }
+
+#map {
+  height: 100%;
+  width: 100%;
+  font-family: monospace;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0
+  }
+
+.tabela {
+  position: relative;
+  z-index: 1;
+  width: 15em;
+  border-radius: 5px;
+  background: rgba(0,0,0,0.45);
+  height: 4em;
+  margin: auto auto 0;
+  }
+
+.legend {
+  position: relative;
+  z-index: 2;
+  }
+
+.tabela table {
+  margin: 0 auto;
+  padding: 3px 1px;
+  border-collapse: collapse;
+  background: white
+  }
+
+.tabela table, th, td {
+  width: 14.7em;
+  border: 1px solid black;
+  padding: 3px 1px;
+  font-family: monospace;
+  font-size: 1.05em;
+  }
+
+.tabela th {
+  text-align: center;
+  background-color: #4CAF50;
+  }
+
+.tabelaaux {
+  padding: 0.5em 0px;
+  }
+
+.tabela td {
+  text-align: left;
+  }
+
+.map-control {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
+  font-family: monospace;
+  text-align: center;
+  margin: 10px;
+  padding-right: 5px;
+  display: none;
+  }
+
+.selector-control {
+  font-size: 1px;
+  line-height: 3px;
+  text-align: center
+  }
+
+
+.map-control label {
+  font-size: 1em;
+  vertical-align: middle;
+}
+
+#map .map-control { display: block; }
+
+input[type="radio"]{
+    vertical-align: bottom;
+    }
+
+
+#legend {
+  margin: auto;
+  padding: 2px 2px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  }
+
+.radiobutton {
+  height: 1.7em;
+}
+
+.map-control table {
+  font-size: 1em;
+  margin: auto;
+  }
+
+.map-control th{
+  width: 1em;
+  height: 0.4em
+  }
+
+.map-control td{
+  width: auto;
+  border: 0px solid white;
+  height: auto;
+  font-size: 1em
+}
+
