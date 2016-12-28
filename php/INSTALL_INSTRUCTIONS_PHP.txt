@@ -20,7 +20,7 @@ $ chkconfig --list httpd
 
 $ iptables -I INPUT 1 -p tcp -m tcp --dport 80 -j ACCEPT
 $ /etc/init.d/iptables save
-$ /etc/inti.d/iptables restart 
+$ /etc/init.d/iptables restart 
 |
 |-> Allows to receive connection on Apache port.
 
