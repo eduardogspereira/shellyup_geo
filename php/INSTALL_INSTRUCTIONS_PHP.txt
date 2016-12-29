@@ -74,7 +74,7 @@ $ getsebool httpd_can_network_connect_db
 
 // Now go on your browser again on http://<IP>/info.html and check if the message changed from "Can't connect with the database" to "Successfully connected to database". If it's working fine, go to the next step.
 
-// When we did the install (12.29.2016), you SELinux was disabled. That's ok, it's probably disabled because you hosting company have other ways to ensure the centos security. But if on the future you turn on the SELinux (set it to enforcing), you will notice that the Apache+PHP won't be able to connect with PostgreSQL. So, to resolve this problem you must run the commands from line 67 and line 71.
+// When we did the install (12.29.2016), your SELinux was disabled. That's ok, it's probably disabled because you hosting company have other ways to ensure the centos security. But if on the future you turn on the SELinux (set it to enforcing), you will notice that the Apache+PHP won't be able to connect with PostgreSQL. The SELinux isolate the processes that are running on the system, so if one hack into your system he won't be able attack both apache and postgresql. So, to resolve this problem you must run the commands from line 67 and line 71.
 
 $ rm -f /var/www/html/info.html
 |
